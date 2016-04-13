@@ -76,6 +76,8 @@ public class ZipfianGenerator extends IntegerGenerator {
 	 */
 	long countforzeta;
 
+	long keyoffset = 0;
+
 	/**
 	 * Flag to prevent problems. If you increase the number of items the zipfian
 	 * generator is allowed to choose from, this code will incrementally compute
@@ -104,6 +106,11 @@ public class ZipfianGenerator extends IntegerGenerator {
 	 */
 	public ZipfianGenerator(long _items) {
 		this(0, _items - 1);
+	}
+
+	public ZipfianGenerator(long _items, String offset) {
+		this(0, _items - 1);
+		keyoffset = Long.decode(offset);
 	}
 
 	/**
@@ -351,7 +358,7 @@ public class ZipfianGenerator extends IntegerGenerator {
 	 */
 	@Override
 	public int nextInt() {
-		return (int) nextLong(items);
+		return (int) ((nextLong(items) + keyoffset) % items);
 	}
 
 	/**

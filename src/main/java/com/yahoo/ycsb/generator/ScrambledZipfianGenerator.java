@@ -140,12 +140,12 @@ public class ScrambledZipfianGenerator extends IntegerGenerator {
 //		ZipfianGenerator gen = new ZipfianGenerator(itemCount);
 
 		int gap = itemCount / arraySize;
-		for (int i = 0; i < 1000*itemCount; i++) {
+		for (int i = 0; i < 10000 * itemCount; i++) {
 			int index = 0;
 			do {
 				index = gen.nextInt();
 			} while (index > transactioninsertkeysequence.lastInt());
-			count[Math.abs(index / gap)] ++;
+			count[Math.abs(index / gap)]++;
 		}
 		for (int i = 0; i < arraySize; i++) {
 			System.out.println(i + "\t" + count[i]);
