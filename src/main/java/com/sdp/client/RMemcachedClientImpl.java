@@ -144,6 +144,9 @@ public class RMemcachedClientImpl implements RMemcachedClient{
 		}
 	}
 
+	/**
+	 * get value from memcached directly
+ 	 */
 	public String get(final String key, boolean needRegister) {
 		String value = null;
 		value = (String) client.get(key);
@@ -152,7 +155,13 @@ public class RMemcachedClientImpl implements RMemcachedClient{
 		}
 		return value;
 	}
-	
+
+	/**
+	 * get value from ember
+	 * @param key
+	 * @param failedId
+     * @return
+     */
 	public String asynGet(final String key, int failedId) {
 		CountDownLatch latch = new CountDownLatch(1);
 		BaseOperation<String> op = new BaseOperation<String>(new MCallback<String>(latch));

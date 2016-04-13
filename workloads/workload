@@ -20,8 +20,8 @@ fieldlength=16
 readallfields=true
 table=usertable
 
-readproportion=0
-updateproportion=1
+readproportion=1
+updateproportion=0
 scanproportion=0
 insertproportion=0
 
@@ -30,7 +30,7 @@ hotspotdatafraction=0.01
 hotspotopnfraction=0.9
 requestdistribution=zipfian
 
-maxexecutiontime=200
+maxexecutiontime=2000
 #measurementtype=other
 histogram.buckets=100
 

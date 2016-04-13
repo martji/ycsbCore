@@ -96,6 +96,13 @@ public class RMClient {
 		int index = new Random().nextInt(vector.size());
 		return vector.get(index);
 	}
+
+	public void removeOneReplica(String key, int replicasId) {
+		Vector<Integer> vector = keyReplicaMap.get(key);
+		if (vector.size() > 1) {
+			vector.remove(replicasId);
+		}
+	}
 	
 	public int getSliceMem(String key) {
 		int index = key.lastIndexOf("user") + 4;
@@ -110,7 +117,12 @@ public class RMClient {
 		leaderIndex = Math.abs(leaderIndex);
 		return clientIdVector.get(leaderIndex);
 	}
-	
+
+	/**
+	 * check local replica map and choose the client to get value
+	 * @param key
+	 * @return
+     */
 	public String get(String key) {
 		String value = null;
 		RMemcachedClientImpl rmClient;
@@ -125,9 +137,10 @@ public class RMClient {
 			int replicasId = getOneReplica(key);
 			rmClient = clientMap.get(replicasId);
 			value = rmClient.get(key, masterId == replicasId);
-			if (value == null | value.length() == 0) {
-				rmClient = clientMap.get(masterId);
-				value = rmClient.asynGet(key, replicasId);
+			if (value == null || value.length() == 0) {
+				removeOneReplica(key, replicasId);
+//				rmClient = clientMap.get(masterId);
+//				value = rmClient.asynGet(key, replicasId);
 			}
 		} else {
 			rmClient = clientMap.get(masterId);

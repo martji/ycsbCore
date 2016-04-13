@@ -1,5 +1,6 @@
 package com.yahoo.ycsb.db;
 
+import java.sql.*;
 import java.util.*;
 
 import org.dom4j.Document;
@@ -20,6 +21,9 @@ public class Mem2cached extends DB {
 	Properties props;
 	Map<Integer, ServerNode> serversMap;
 
+	Connection connection = null;
+    Statement stmt;
+
 	public static final int OK = 0;
 	public static final int ERROR = -1;
 	public static final int NOT_FOUND = -2;
@@ -34,11 +38,16 @@ public class Mem2cached extends DB {
 		}
 		serversMap = new HashMap<Integer, ServerNode>();
 		RegisterHandler.initHandler();
-		getServerList();
+		getServerList(System.getProperty("user.dir") + serversPath);
 		
 
 		try {
 			client = new M2Client(mode, recordCount, serversMap);
+
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            connection = DriverManager.getConnection("jdbc:mysql://192.168.3.109:3306/ycsb", "ycsb", "123456");
+            System.out.println("connect succeed");
+            stmt = connection.createStatement();
 		} catch (Exception e) {
 			throw new DBException(e);
 		}
@@ -46,19 +55,47 @@ public class Mem2cached extends DB {
 	
 	public void cleanup() throws DBException {
 		client.shutdown();
+
+        try {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 
 	
 	public int read(String table, String key, Set<String> fields, HashMap<String, ByteIterator> result) {
 		String values = client.get(table + ":" + key);
-		if (values == null)
-			return NOT_FOUND;
-		if (values.length() == 0)
-			return NOT_FOUND;
+		if (values == null || values.length() == 0) {
+            values = readSQL(table + ":" + key);
+            if (values == null || values.length() == 0) {
+                return NOT_FOUND;
+            }
+        }
 
 		result.put(key, new ByteArrayByteIterator(values.getBytes()));
 		return OK;
 	}
+
+    public String readSQL(String key) {
+        String result = null;
+        String sql = String.format("SELECT SQL_NO_CACHE v FROM test WHERE k = '%s'", key);
+        try {
+            ResultSet res = stmt.executeQuery(sql);
+            if (res.next()) {
+                result = res.getString(1);
+                return result;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 	
 	public int scan(String table, String startkey, int recordcount,
 			Set<String> fields, Vector<HashMap<String, ByteIterator>> result) {
@@ -72,12 +109,24 @@ public class Mem2cached extends DB {
 		}
 
 		Boolean f = client.set(table + ":" + key, new_values.toString());
+//        updateSQL(table + ":" + key, new_values.toString());
 		try {
 			return f ? OK : ERROR;
 		} catch (Exception e) {
 			return ERROR;
 		}
 	}
+
+    private boolean updateSQL(String key, String value) {
+        String sql = String.format("INSERT INTO test (k, v) VALUES ('%s', '%s')", key, value);
+        try {
+            stmt.executeUpdate(sql);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 	public int insert(String table, String key,
 			HashMap<String, ByteIterator> values) {
@@ -90,8 +139,7 @@ public class Mem2cached extends DB {
 	}
 	
 	@SuppressWarnings({ "unchecked" })
-	public void getServerList() {
-		String serverListPath = System.getProperty("user.dir") + "/config/serverlist.xml";
+	public void getServerList(String serverListPath) {
 		SAXReader sr = new SAXReader();
 		try {
 			Document doc = sr.read(serverListPath);

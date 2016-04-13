@@ -1,5 +1,6 @@
 package com.yahoo.ycsb.db;
 
+import java.sql.*;
 import java.util.*;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -26,6 +27,9 @@ public class RMemcached extends DB {
 	private int setMode = 0;
 	private int replicasNum = 1;
 
+	Connection connection = null;
+	Statement stmt;
+
 	public void init() throws DBException {
 		props = getProperties();
 		String serversPath = props.getProperty("rmemcached.path");
@@ -38,13 +42,18 @@ public class RMemcached extends DB {
 		}
 		serversMap = new HashMap<Integer, ServerNode>();
 		RegisterHandler.initHandler();
-		getServerList();
+		getServerList(System.getProperty("user.dir") + serversPath);
 		
 
 		try {
 			int clientId = (int) System.nanoTime();
 			System.out.println("clientId: " + clientId);
 			client = new RMClient(clientId, mode, recordCount, serversMap);
+
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			connection = DriverManager.getConnection("jdbc:mysql://192.168.3.109:3306/ycsb", "ycsb", "123456");
+			System.out.println("connect succeed");
+			stmt = connection.createStatement();
 		} catch (Exception e) {
 			throw new DBException(e);
 		}
@@ -57,13 +66,30 @@ public class RMemcached extends DB {
 	
 	public int read(String table, String key, Set<String> fields, HashMap<String, ByteIterator> result) {
 		String values = client.get(table + ":" + key);
-		if (values == null)
-			return NOT_FOUND;
-		if (values.length() == 0)
-			return NOT_FOUND;
+		if (values == null || values.length() == 0) {
+			values = readSQL(table + ":" + key);
+			if (values == null || values.length() == 0) {
+				return NOT_FOUND;
+			}
+		}
 
 		result.put(key, new ByteArrayByteIterator(values.getBytes()));
 		return OK;
+	}
+
+	public String readSQL(String key) {
+		String result = null;
+		String sql = String.format("SELECT SQL_NO_CACHE v FROM test WHERE k = '%s'", key);
+		try {
+			ResultSet res = stmt.executeQuery(sql);
+			if (res.next()) {
+				result = res.getString(1);
+				return result;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	public int scan(String table, String startkey, int recordcount,
@@ -125,8 +151,7 @@ public class RMemcached extends DB {
 	}
 	
 	@SuppressWarnings({ "unchecked" })
-	public void getServerList() {
-		String serverListPath = System.getProperty("user.dir") + "/config/serverlist.xml";
+	public void getServerList(String serverListPath) {
 		SAXReader sr = new SAXReader();
 		try {
 			Document doc = sr.read(serverListPath);
