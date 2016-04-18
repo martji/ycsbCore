@@ -29,7 +29,7 @@ insertproportion=0
 hotspotdatafraction=0.01
 hotspotopnfraction=0.9
 requestdistribution=zipfian
-keyoffset=250000
+keyoffset=0
 
 maxexecutiontime=2000
 #measurementtype=other
