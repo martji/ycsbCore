@@ -46,7 +46,7 @@ public class TestConnect2Server {
 		long start = System.currentTimeMillis();
 		int count = 10000;
 		for (int i = 0; i < count; i++) {
-//			client.set2R("test", "123");
+//			mcClient.set2R("test", "123");
 			client.set("test", "123");
 		}
 		System.out.println((System.currentTimeMillis() - start));

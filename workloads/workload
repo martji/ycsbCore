@@ -7,6 +7,8 @@
 # for rmemcached : mode = 0,1 (0原始hash方式，1数据分片)
 # for rmemcached : setmode = 0,1,2 (0 for set, 1 for synchronousSet, 2 for asyncSet)
 
+# keyoffset : 负载分布的偏移量
+
 db=com.yahoo.ycsb.db.RMemcached
 workload=com.yahoo.ycsb.workloads.CoreWorkload
 insertorder=direct

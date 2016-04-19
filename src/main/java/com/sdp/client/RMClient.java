@@ -119,7 +119,7 @@ public class RMClient {
 	}
 
 	/**
-	 * check local replica map and choose the client to get value
+	 * check local replica map and choose the mcClient to get value
 	 * @param key
 	 * @return
      */
