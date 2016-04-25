@@ -40,9 +40,9 @@ public class EmberClient {
     private StringBuffer message = new StringBuffer();
     private ConcurrentMap<String, Vector<Integer>> keyReplicaMap;
 
-    public EmberClient(ConcurrentMap<String, Vector<Integer>> keyReplicaMap,
+    public EmberClient(ConcurrentMap<String, Vector<Integer>> replicaMap,
                        int clientNode, String host, int rport, int wport) {
-        this.keyReplicaMap = keyReplicaMap;
+        this.keyReplicaMap = replicaMap;
         try {
             rbootstrap = new ClientBootstrap(new NioClientSocketChannelFactory(
                     Executors.newCachedThreadPool(),
