@@ -2,10 +2,10 @@
 <testng-results skipped="0" failed="0" total="0" passed="0">
   <reporter-output>
   </reporter-output>
-  <suite name="com.sdp.ycsb.ycsbCore.AppTest" duration-ms="1" started-at="2015-08-06T12:40:22Z" finished-at="2015-08-06T12:40:22Z">
+  <suite name="com.sdp.ycsb.ycsbCore.AppTest" duration-ms="0" started-at="2016-07-18T20:06:07Z" finished-at="2016-07-18T20:06:07Z">
     <groups>
     </groups>
-    <test name="Command line test" duration-ms="1" started-at="2015-08-06T12:40:22Z" finished-at="2015-08-06T12:40:22Z">
+    <test name="Command line test" duration-ms="0" started-at="2016-07-18T20:06:07Z" finished-at="2016-07-18T20:06:07Z">
     </test>
   </suite>
 </testng-results>

@@ -14,7 +14,8 @@ public class MRedis {
     }
 
     public boolean set(String key, String value) {
-        return jedis.set(key, value).isEmpty() ? false : true;
+        String out = jedis.set(key, value);
+        return out != null;
     }
 
     public String get(String key) {

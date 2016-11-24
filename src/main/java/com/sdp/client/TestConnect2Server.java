@@ -23,7 +23,7 @@ public class TestConnect2Server {
 		int recordCount = 1000;
 		HashMap<Integer, ServerNode> serversMap = new HashMap<Integer, ServerNode>();
 		RegisterHandler.initHandler();
-		String serverListPath = System.getProperty("user.dir") + "/config/serverlist.xml";
+		String serverListPath = System.getProperty("user.dir") + "/config/servers.xml";
 		SAXReader sr = new SAXReader();
 		try {
 			Document doc = sr.read(serverListPath);
