@@ -5,6 +5,8 @@
 
 .idea
 .settings
+/logs
+/target
 
 # Package Files #
 *.jar
