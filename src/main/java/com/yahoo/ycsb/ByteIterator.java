@@ -43,10 +43,8 @@ import java.util.Iterator;
  */
 public abstract class ByteIterator implements Iterator<Byte> {
 
-	@Override
 	public abstract boolean hasNext();
 
-	@Override
 	public Byte next() {
 		throw new UnsupportedOperationException();
 		//return nextByte();
@@ -65,7 +63,6 @@ public abstract class ByteIterator implements Iterator<Byte> {
 
 	public abstract long bytesLeft();
 	
-	@Override
 	public void remove() {
 		throw new UnsupportedOperationException();
 	}
