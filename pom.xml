@@ -47,8 +47,8 @@
             <version>2.7.3</version>
         </dependency>
         <dependency>
-            <groupId>com.sdp.rmemcache</groupId>
-            <artifactId>rmemcached_client</artifactId>
+            <groupId>com.sdp.ember</groupId>
+            <artifactId>ember_client</artifactId>
             <version>3.0.0</version>
         </dependency>
     </dependencies>
