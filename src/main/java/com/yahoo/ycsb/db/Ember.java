@@ -2,6 +2,7 @@ package com.yahoo.ycsb.db;
 
 import com.sdp.client.DBClient;
 import com.sdp.common.RegisterHandler;
+import com.sdp.log.Log;
 import com.sdp.server.ServerNode;
 import com.yahoo.ycsb.ByteArrayByteIterator;
 import com.yahoo.ycsb.ByteIterator;
@@ -38,6 +39,7 @@ public class Ember extends DB {
             throw new DBException("server_path param must be specified");
         }
 
+        Log.init();
         RegisterHandler.initHandler();
         List<ServerNode> nodes = getServerNode(System.getProperty("user.dir") + serverPath);
         try {

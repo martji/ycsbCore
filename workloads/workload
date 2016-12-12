@@ -5,7 +5,7 @@
 
 # keyoffset: the offset of zipfian
 
-db=com.yahoo.ycsb.db.Memcached
+db=com.yahoo.ycsb.db.Ember
 workload=com.yahoo.ycsb.workloads.CoreWorkload
 insertorder=direct
 
@@ -29,15 +29,15 @@ hotspotopnfraction=0.9
 requestdistribution=zipfian
 keyoffset=0
 
-maxexecutiontime=2000
+maxexecutiontime=200
 #measurementtype=other
 histogram.buckets=100
 
 # ember config
 # client_type: 0 = mc; 1 = redis; 2 = ember
-# data_hash_mode: 0 = slice_mode; 1 = index_mode
+# data_hash_mode: 0 = slice_mode; 1 = index_mode; 2 = random_mode; 3 = fixed 0
 server_path=/config/servers.xml
-client_type=0
-data_hash_mode=1
+client_type=2
+data_hash_mode=0
 data_set_mode=3
 replicas_num=0

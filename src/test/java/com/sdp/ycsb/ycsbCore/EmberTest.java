@@ -1,5 +1,6 @@
 package com.sdp.ycsb.ycsbCore;
 
+import com.sdp.log.Log;
 import com.yahoo.ycsb.ByteIterator;
 import com.yahoo.ycsb.RandomByteIterator;
 import com.yahoo.ycsb.db.Ember;
@@ -24,6 +25,7 @@ public class EmberTest {
 
     @Before
     public void before() throws Exception {
+        Log.init();
         String configPath = System.getProperty("user.dir") + "/workloads/workload";
         try {
             Properties properties = new Properties();
