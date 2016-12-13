@@ -31,6 +31,7 @@ public class Ember extends DB {
         props = getProperties();
         String serverPath = props.getProperty("server_path");
         int type = Integer.decode(props.getProperty("client_type", "0"));
+        int replicaMode = Integer.decode(props.getProperty("replica_mode", "0"));
         int recordCount = Integer.decode(props.getProperty("recordcount"));
         int dataHashMode = Integer.decode(props.getProperty("data_hash_mode", "0"));
         int dataSetMode = Integer.decode(props.getProperty("data_set_mode", "0"));
@@ -43,7 +44,7 @@ public class Ember extends DB {
         RegisterHandler.initHandler();
         List<ServerNode> nodes = getServerNode(System.getProperty("user.dir") + serverPath);
         try {
-            client = new DBClient(type, nodes);
+            client = new DBClient(type, replicaMode, nodes);
             client.initConfig(recordCount, dataHashMode, dataSetMode);
         } catch (Exception e) {
             throw new DBException(e);
