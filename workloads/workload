@@ -34,12 +34,16 @@ maxexecutiontime=300
 histogram.buckets=100
 
 # ember config
-# client_type: 0 = mc; 1 = redis; 2 = ember
+# client_type: 0 = mc; 1 = redis; 2 = ember/spore, 3 = rs
 # replica_mode: 0 = ember; 1 = spore
 # data_hash_mode: 0 = slice_mode; 1 = index_mode; 2 = random_mode; 3 = fixed 0
 server_path=/config/servers.xml
-client_type=2
+client_type=3
 replica_mode=0
 data_hash_mode=0
 data_set_mode=3
 replicas_num=0
+
+# reed-solomon
+data_shards=2
+parity_shards=2

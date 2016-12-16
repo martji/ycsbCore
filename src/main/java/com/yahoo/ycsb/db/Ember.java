@@ -44,7 +44,7 @@ public class Ember extends DB {
         RegisterHandler.initHandler();
         List<ServerNode> nodes = getServerNode(System.getProperty("user.dir") + serverPath);
         try {
-            client = new DBClient(type, replicaMode, nodes);
+            client = new DBClient(type, replicaMode, nodes, props);
             client.initConfig(recordCount, dataHashMode, dataSetMode);
         } catch (Exception e) {
             throw new DBException(e);
