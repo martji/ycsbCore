@@ -18,7 +18,7 @@ import java.util.*;
 /**
  * Created by Guoqing on 2016/12/1.
  */
-public class Ember extends DB {
+public class DataClient extends DB {
 
     private DBClient client;
     private Properties props;

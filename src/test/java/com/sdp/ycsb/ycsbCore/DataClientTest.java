@@ -3,7 +3,7 @@ package com.sdp.ycsb.ycsbCore;
 import com.sdp.log.Log;
 import com.yahoo.ycsb.ByteIterator;
 import com.yahoo.ycsb.RandomByteIterator;
-import com.yahoo.ycsb.db.Ember;
+import com.yahoo.ycsb.db.DataClient;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
@@ -13,15 +13,15 @@ import java.util.HashMap;
 import java.util.Properties;
 
 /**
- * Ember Tester.
+ * DataClient Tester.
  *
  * @author magq
  * @version 1.0
  * @since <pre>Nov 2, 2016</pre>
  */
-public class EmberTest {
+public class DataClientTest {
 
-    private Ember ember = new Ember();
+    private DataClient dataClient = new DataClient();
 
     @Before
     public void before() throws Exception {
@@ -30,17 +30,17 @@ public class EmberTest {
         try {
             Properties properties = new Properties();
             properties.load(new FileInputStream(configPath));
-            ember.setProperties(properties);
+            dataClient.setProperties(properties);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        ember.init();
+        dataClient.init();
     }
 
     @After
     public void after() throws Exception {
-        ember.cleanup();
+        dataClient.cleanup();
     }
 
     /**
@@ -66,7 +66,7 @@ public class EmberTest {
         String key = "user001";
         HashMap<String, ByteIterator> values = new HashMap<String, ByteIterator>();
 
-        ember.read(table, key, null, values);
+        dataClient.read(table, key, null, values);
     }
 
     /**
@@ -79,6 +79,6 @@ public class EmberTest {
         HashMap<String, ByteIterator> values = new HashMap<String, ByteIterator>();
         values.put("1", new RandomByteIterator(1));
 
-        ember.update(table, key, values);
+        dataClient.update(table, key, values);
     }
 } 

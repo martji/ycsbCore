@@ -2,10 +2,11 @@
 # Edit by magq
 # https://github.com/brianfrankcooper/YCSB/wiki/Core-Properties
 # java -jar ycsbCore-version-jar-with-dependencies.jar -P ../workloads/workload -s -t
+# -P [workload number / workload name] [workload name list]
 
 # keyoffset: the offset of zipfian
 
-db=com.yahoo.ycsb.db.Ember
+db=com.yahoo.ycsb.db.DataClient
 workload=com.yahoo.ycsb.workloads.CoreWorkload
 insertorder=direct
 
@@ -18,31 +19,32 @@ fieldlength=16
 readallfields=true
 table=usertable
 
-readproportion=1
-updateproportion=0
+readproportion=0.5
+updateproportion=0.5
 scanproportion=0
 insertproportion=0
 
-#requestdistribution=hotspot
+requestdistribution=hotspot
 hotspotdatafraction=0.01
-hotspotopnfraction=0.9
-requestdistribution=zipfian
-keyoffset=0
+hotspotopnfraction=0.99
 
-maxexecutiontime=300
+#requestdistribution=zipfian
+#keyoffset=0
+
+maxexecutiontime=120
 #measurementtype=other
-histogram.buckets=100
+histogram.buckets=10
 
 # ember config
 # client_type: 0 = mc; 1 = redis; 2 = ember/spore, 3 = rs
 # replica_mode: 0 = ember; 1 = spore
-# data_hash_mode: 0 = slice_mode; 1 = index_mode; 2 = random_mode; 3 = fixed 0
+# data_hash_mode: 0 = slice_mode; 1 = index_mode; 2 = random_mode; 3 = fixed
 server_path=/config/servers.xml
 client_type=3
-replica_mode=0
+replica_mode=1
 data_hash_mode=0
 data_set_mode=3
-replicas_num=0
+replicas_num=1
 
 # reed-solomon
 data_shards=2
